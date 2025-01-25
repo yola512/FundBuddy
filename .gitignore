@@ -1,0 +1,9 @@
+# ignore database files
+*.db
+# ignore Python cache files
+__pycache__/
+# ignore virtual environment folder
+.venv/
+instance/
+.env
+.DS_STORE
