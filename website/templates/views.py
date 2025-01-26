@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session, redirect, url_for
 from flask_login import login_required, current_user
 
 views = Blueprint('views', __name__)
@@ -13,4 +13,9 @@ def homepage():
 def dashboard():
     return render_template("dashboard.html", user=current_user)
 
+# Logout
+@views.route("/logout")
+def logout():
+    session.pop('email', None)
+    return redirect(url_for('homepage'))
 

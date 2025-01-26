@@ -8,13 +8,30 @@
     <title>SignUp</title>
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="/static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
 </head>
 <body>
-    <script src="/static/bootstrap/js/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+
     <section class="vh-100 bg-image"
     style="background-image: url('/static/money-2724241_1280.jpg');">
     <div class="mask d-flex align-items-center h- gradient-custom-3">
       <div class="container h-100">
+
+        <!-- Alerts -->
+        <div class="container mt-3">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                  <strong>{{ message }}</strong>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-12 col-md-9 col-lg-7 col-xl-6">
             <div class="card" style="border-radius: 15px;">
@@ -39,7 +56,7 @@
                   </div>
   
                   <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" name="repeat_password" id="form3Example4cdg" class="form-control form-control-lg" />
+                    <input type="password" name="confirm_password" id="form3Example4cdg" class="form-control form-control-lg" />
                     <label class="form-label" for="form3Example4cdg">Repeat your password</label>
                   </div>
   

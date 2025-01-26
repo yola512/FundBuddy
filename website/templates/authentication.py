@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, request, redirect, url_for
+from flask import Blueprint, render_template, flash, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
 from website.models import User
@@ -15,14 +15,19 @@ def login():
        email = request.form.get('email')
        password = request.form.get('password')
 
-       # data validation
+       # email/password field wasn't filled in
+       if not email or not password:
+         flash("Please fill in both email and password.", category='danger')
+         return render_template('login.html')
+
+       # data validation + creating session for specific user
        user = User.query.filter_by(email=email).first()
        if user and check_password_hash(user.password, password):
           login_user(user)
           flash("Logged in successfully", category='success')
           return redirect(url_for('views.dashboard'))
        else:
-          flash("Invalid email or password", category='error')
+          flash("Invalid email or password", category='danger')
 
     return render_template('login.html')
 
@@ -35,15 +40,32 @@ def sign_up():
       password = request.form.get('password')
       confirm_password = request.form.get('confirm_password')
     
-      # data validation
+      # check if every field is filled out
+      if not first_name:
+         flash("Please enter your first name.", category='danger')
+         return render_template('signup.html')
+      elif not email:
+         flash("Please enter your email.", category='danger')
+         return render_template('signup.html')
+      elif not password:
+         flash("Please enter your password.", category='danger')
+         return render_template('signup.html')
+      elif not confirm_password:
+         flash("Please confirm your password.", category='danger')
+         return render_template('signup.html')
+      
+      # verify user
       user = User.query.filter_by(email=email).first()
       # if email already exists in the database -> display proper error message
       if user:
-         flash("Email already exists", category = 'error')
-      elif not validate_password():
+         flash("Email already exists", category = 'danger')
+         return render_template('signup.html')
+      elif not validate_password(password):
          flash("Password must have at least 8 characters, min. 1 uppercase letter, min. 1 lowercase letter and min. 1 digit", category='error')
+         return render_template('signup.html')
       elif password != confirm_password:
-         flash("Passwords don't match", category='error')
+         flash("Passwords don't match", category="danger")
+         return render_template('signup.html')
       else:
          # add new user to database
          new_user = User(first_name=first_name,

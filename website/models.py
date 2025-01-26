@@ -1,7 +1,8 @@
 from . import db #import from current package (so from website, we can import bc of __init__.py)
 from flask_login import UserMixin 
 from sqlalchemy.sql import func
-from sqlalchemy_utils import PasswordType, EmailType, Currency, CurrencyType, force_auto_coercion
+from sqlalchemy_utils import EmailType, Currency, CurrencyType, force_auto_coercion
+import re
 
 force_auto_coercion()
 
@@ -10,13 +11,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     first_name = db.Column(db.String(50), nullable = False)
     email = db.Column(EmailType, nullable = False, unique = True)
-    password = db.Column(PasswordType(
-        schemes = [
-            'pbkdf2_sha512',
-            'md5_crypt'
-        ],
-        deprecated = ['md5_crypt']
-    ), nullable = False)
+    password = db.Column(db.String(150), nullable = False)
     incomes = db.relationship('Income', backref = 'user')
     expenses = db.relationship('Expenses', backref = 'user')
     savings = db.relationship('Savings', backref = 'user')
