@@ -1,0 +1,124 @@
+{<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <!-- Meta tags-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Categories</title>
+        <!-- Bootstrap CSS-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+    
+        <style>
+            body {
+                font-family: 'Lucida Sans', sans-serif;
+                background-image: url('/static/dashboard.png');
+                background-size: cover; /* Ensures the image covers the entire screen */
+                background-position: center;  /* Centers the image */
+                background-attachment: fixed;  /* Keeps the image in place when scrolling */
+                background-repeat: no-repeat;  /* Prevents repeating the image */
+            }
+    
+            .navbar {
+                background-color:beige;
+                border-radius: 25px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                margin: 5px;
+                padding: 0 15px;
+                width: auto;
+            }
+    
+            .dashboard-container {
+                margin: 20px;
+            }
+    
+            .greeting {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            
+            .card {
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+    
+    
+        </style>
+    </head>
+    
+    <body>
+         <!-- Bootstrap Bundle JS -->
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+         <!-- Navigation bar -->
+         <nav class="navbar navbar-expand-lg navbar-light" style="display: inline-block; position: absolute; right: 0; top: 0">
+              <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/insights">Insights</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/expenses">Expenses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/income">Income</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/savings">Savings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/categories">Categories</a></li>
+                </ul>
+                <div class="dropdown ms-auto">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="settingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settingsDropdown">
+                        <li><a class="dropdown-item" href="/logout">Log Out</a></li>
+                    </ul>
+                </div>
+              </div>
+        </nav>
+    
+        <!-- Dashboard Content -->
+        <div class="container dashboard-container">
+            <p class="greeting" style="margin-top: 150px">"Welcome!</p>
+                <div class="col-md-3">
+                    <div class="card text-center p-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Expenses</span>
+                            <select class="form-select form-select-sm w-auto" aria-label="Expenses period">
+                                <option value="this-year" selected>This Year</option>
+                                <option value="this-month">This Month</option>
+                                <option value="this-day">This Day</option>
+                            </select>
+                        </div>
+                        <h2 class="mt-3">$</h2>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="card text-center p-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Income</span>
+                            <select class="form-select form-select-sm w-auto" aria-label="Income period">
+                                <option value="last-year" selected>Last Year</option>
+                                <option value="last-month">Last Month</option>
+                            </select>
+                        </div>
+                        <h2 class="mt-3">$</h2>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center p-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Expenses</span>
+                            <select class="form-select form-select-sm w-auto" aria-label="Expenses period">
+                                <option value="last-year" selected>Last Year</option>
+                                <option value="last-month">Last Month</option>
+                            </select>
+                        </div>
+                        <h2 class="mt-3">$</h2>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+         
+    
+    </body>}
