@@ -21,9 +21,13 @@ class Income(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable = False)
     amount = db.Column(db.Numeric(10,2), nullable = False)
+    category_id = db.Column(db.Integer, db.ForeignKey('Categories.id'), nullable = False)
     currency = db.Column(CurrencyType, nullable = False)
     date = db.Column(db.DateTime(timezone = True), default = func.now())
     description = db.Column(db.String(300))
+
+    # relationship with category
+    category = db.relationship('Category', backref='incomes')
 
 class Category(db.Model):
     __tablename__ = 'Categories'
@@ -39,6 +43,9 @@ class Expenses(db.Model):
     currency = db.Column(CurrencyType, nullable = False)
     date = db.Column(db.DateTime(timezone = True), default = func.now())
     category_id = db.Column(db.Integer, db.ForeignKey('Categories.id'), nullable = False)
+
+    # relationship with category
+    category = db.relationship('Category', backref='expenses')
 
 class Savings(db.Model):
     __tablename__ = 'Savings'

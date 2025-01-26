@@ -7,3 +7,4 @@ __pycache__/
 instance/
 .env
 .DS_STORE
+migrations/

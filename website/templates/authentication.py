@@ -8,7 +8,7 @@ import re
 
 auth_bp = Blueprint('auth', __name__)
 
-#log in
+# log in
 @auth_bp.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -31,7 +31,15 @@ def login():
 
     return render_template('login.html')
 
-#sign up
+# Logout
+@auth_bp.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out", category='success')
+    return redirect(url_for('views.homepage'))
+
+# sign up
 @auth_bp.route("/sign-up", methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
@@ -61,7 +69,7 @@ def sign_up():
          flash("Email already exists", category = 'danger')
          return render_template('signup.html')
       elif not validate_password(password):
-         flash("Password must have at least 8 characters, min. 1 uppercase letter, min. 1 lowercase letter and min. 1 digit", category='error')
+         flash("Password must have at least 8 characters, min. 1 uppercase letter, min. 1 lowercase letter and min. 1 digit", category='danger')
          return render_template('signup.html')
       elif password != confirm_password:
          flash("Passwords don't match", category="danger")
@@ -81,7 +89,7 @@ def sign_up():
 
 # validate password using regex: min.: 8 characters, 1 uppercase letter, 1 lowercase letter, 1 digit
 def validate_password(password):
-   pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+   pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
    if re.match(pattern, password):
       return True
    return False

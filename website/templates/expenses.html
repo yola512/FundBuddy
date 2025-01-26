@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses</title>
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- jQuery (required for Bootstrap Datepicker) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Lucida Sans', sans-serif;
+            background-image: url('/static/dashboard.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .navbar {
+            background-color: beige;
+            border-radius: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 5px;
+            padding: 0 15px;
+            width: auto;
+        }
+
+        .form-popup {
+            display: none;
+            position: absolute;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .dashboard-container {
+            flex-grow: 1;
+            margin-top: 50px;
+        }
+
+        .chart-container {
+            margin-bottom: 30px;
+        }
+
+        .add-expenses-btn {
+            margin: 20px 0;
+        }
+
+        .expenses-list {
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="display: inline-block; position: absolute; right: 0; top: 0">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/dashboard">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/insights">Insights</a></li>
+                <li class="nav-item"><a class="nav-link" href="/expenses">Expenses</a></li>
+                <li class="nav-item"><a class="nav-link" href="/income">Income</a></li>
+                <li class="nav-item"><a class="nav-link" href="/savings">Savings</a></li>
+                <li class="nav-item"><a class="nav-link" href="/categories">Categories</a></li>
+            </ul>
+            <div class="dropdown ms-auto">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="settingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-gear"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settingsDropdown">
+                    <li><a class="dropdown-item" href="/logout">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container dashboard-container">
+        <p style="position: absolute; top: 150px">MY EXPENSES:</p>
+
+        <!-- Expenses Chart -->
+        <div class="row chart-container">
+            <div class="col-md-12">
+                <canvas id="expensesChart" style="position: absolute; top: 200px; max-width: 500px; max-height: 250px;"></canvas>
+            </div>
+        </div>
+
+        
+        <!-- Add Expenses Button -->
+        <div class="row add-expenses-btn">
+            <div class="col-md-12 text-center" style="position: absolute; top: 570px; left: 60px;">
+                <button class="btn btn-primary" id="addExpensesBtn">+ Add Expenses</button>
+            </div>
+        </div>
+
+        <!-- Expenses Form -->
+        <div class="form-popup" id="expensesForm">
+            <form id="expensesFormContent">
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="amount" required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" class="form-control" id="category" required>
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="text" class="form-control datepicker" id="date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="button" class="btn btn-danger" id="closeFormBtn">Close</button>
+            </form>
+        </div>
+
+        <!-- Expenses List -->
+        <div class="row expenses-list">
+            <div class="col-md-12"  style="position:absolute; top: 700px;">
+                <h3>Expenses</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expensesList">
+                        <!-- Expense entries will appear here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Toggle expenses form
+        document.getElementById("addExpensesBtn").onclick = function() {
+            document.getElementById("expensesForm").style.display = "block";
+        };
+
+        // Close form
+        document.getElementById("closeFormBtn").onclick = function() {
+            document.getElementById("expensesForm").style.display = "none";
+        };
+
+        // Initialize date picker
+        $(document).ready(function() {
+            $('#date').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+        });
+
+        // Chart setup
+        const ctx = document.getElementById('expensesChart').getContext('2d');
+        const expensesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['This Year', 'This Month', 'Last Year', 'Last Month'],
+                datasets: [{
+                    label: 'Expenses',
+                    data: [5000, 1200, 4500, 1000], // Replace with dynamic data
+                    backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                    borderColor: 'rgba(0, 123, 255, 1)',
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Handle form submission
+        document.getElementById("expensesFormContent").onsubmit = function(e) {
+            e.preventDefault();
+
+            const amount = document.getElementById("amount").value;
+            const category = document.getElementById("category").value;
+            const date = document.getElementById("date").value;
+            const description = document.getElementById("description").value;
+
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${amount}</td>
+                <td>${category}</td>
+                <td>${date}</td>
+                <td>${description}</td>
+            `;
+
+            document.getElementById("expensesList").appendChild(newRow);
+            document.getElementById("expensesForm").style.display = "none";
+        };
+    </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ import sqlite3
 import os
 from os import path
 from dotenv import load_dotenv
+from flask_migrate import Migrate
 
 load_dotenv()
 
@@ -19,7 +20,9 @@ def create_app():
   app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
   
   # initialize the app 
-  db.init_app(app) 
+  db.init_app(app)
+  migrate = Migrate(app, db)  # initialize Flask-Migrate
+
   
   from website.templates.views import views
   from website.templates.authentication import auth_bp
@@ -36,7 +39,7 @@ def create_app():
 
  # configuring app
   login_manager = LoginManager()
-  login_manager.login_view = '/login'
+  login_manager.login_view = "auth.login" 
   login_manager.init_app(app)
 
   @login_manager.user_loader
