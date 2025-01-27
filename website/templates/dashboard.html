@@ -75,7 +75,7 @@
 
     <!-- Dashboard Content -->
     <div class="container dashboard-container">
-        <p class="greeting" style="margin-top: 150px">"Welcome!</p>
+        <p class="greeting" style="margin-top: 150px">Welcome!</p>
         <div class="row mt-4">
             <div class="col-md-3">
                 <div class="card text-center p-3">
@@ -87,7 +87,7 @@
                             <option value="this-day">This Day</option>
                         </select>
                     </div>
-                    <h2 class="mt-3">$</h2>
+                    <h2 class="mt-3">$ {{ income_this_year }}</h2>
                 </div>
             </div>
             <div class="col-md-3">
@@ -100,7 +100,7 @@
                             <option value="this-day">This Day</option>
                         </select>
                     </div>
-                    <h2 class="mt-3">$</h2>
+                    <h2 class="mt-3">${{ expenses_this_year }}</h2>
                 </div>
             </div>
         </div>
@@ -115,7 +115,7 @@
                             <option value="last-month">Last Month</option>
                         </select>
                     </div>
-                    <h2 class="mt-3">$</h2>
+                    <h2 class="mt-3">${{ income_last_year }}</h2>
                 </div>
             </div>
             <div class="col-md-3">
@@ -127,7 +127,7 @@
                             <option value="last-month">Last Month</option>
                         </select>
                     </div>
-                    <h2 class="mt-3">$</h2>
+                    <h2 class="mt-3">${{ expenses_last_year }}</h2>
                 </div>
             </div>
         </div>

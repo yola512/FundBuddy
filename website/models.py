@@ -15,6 +15,7 @@ class User(db.Model, UserMixin):
     incomes = db.relationship('Income', backref = 'user')
     expenses = db.relationship('Expenses', backref = 'user')
     savings = db.relationship('Savings', backref = 'user')
+    categories = db.relationship('Category', backref='user', lazy=True)  # relationship to Category
 
 class Income(db.Model):
     __tablename__ = 'Incomes'
@@ -22,7 +23,7 @@ class Income(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable = False)
     amount = db.Column(db.Numeric(10,2), nullable = False)
     category_id = db.Column(db.Integer, db.ForeignKey('Categories.id'), nullable = False)
-    currency = db.Column(CurrencyType, nullable = False)
+    currency = db.Column(CurrencyType, nullable = False, default="USD")
     date = db.Column(db.DateTime(timezone = True), default = func.now())
     description = db.Column(db.String(300))
 
@@ -34,13 +35,14 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     cat_name = db.Column(db.String(50), nullable = False)
     description = db.Column(db.String(300)) 
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
 
 class Expenses(db.Model):
     __tablename__ = 'Expenses'
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable = False)
     amount = db.Column(db.Numeric(10,2), nullable = False)
-    currency = db.Column(CurrencyType, nullable = False)
+    currency = db.Column(CurrencyType, nullable = False, default="USD")
     date = db.Column(db.DateTime(timezone = True), default = func.now())
     category_id = db.Column(db.Integer, db.ForeignKey('Categories.id'), nullable = False)
 
@@ -53,4 +55,4 @@ class Savings(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable = False)
     goal = db.Column(db.String(300)) # optional goal description
     total_savings = db.Column(db.Numeric(10,2), nullable = False) # numeric(10,.) bc it's a personal expense tracker and i dont think the transactions will be larger than 99 million  
-    currency = db.Column(CurrencyType, nullable = False)
+    currency = db.Column(CurrencyType, nullable = False, default="USD")

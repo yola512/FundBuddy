@@ -99,6 +99,20 @@
     <div class="container dashboard-container">
         <p style="position: absolute; top: 150px">MY EXPENSES:</p>
 
+        <!-- Alerts -->
+         <div class="container mt-3">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+        </div>
+
         <!-- Expenses Chart -->
         <div class="row chart-container">
             <div class="col-md-12">
@@ -116,22 +130,26 @@
 
         <!-- Expenses Form -->
         <div class="form-popup" id="expensesForm">
-            <form id="expensesFormContent">
+            <form id="expensesFormContent" action="{{ url_for('views.add_expenses') }}" method="POST">
                 <div class="mb-3">
                     <label for="amount" class="form-label">Amount</label>
-                    <input type="number" class="form-control" id="amount" required>
+                    <input type="number" class="form-control" id="amount" name="amount" required>
                 </div>
                 <div class="mb-3">
                     <label for="category" class="form-label">Category</label>
-                    <input type="text" class="form-control" id="category" required>
+                    <select class="form-control" id="category" name="category" required>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.cat_name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="date" class="form-label">Date</label>
-                    <input type="text" class="form-control datepicker" id="date" required>
+                    <input type="text" class="form-control datepicker" id="date" name="date" required>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" rows="3" required></textarea>
+                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                 </div>
                 <button type="submit" class="btn btn-success">Submit</button>
                 <button type="button" class="btn btn-danger" id="closeFormBtn">Close</button>
@@ -152,7 +170,14 @@
                         </tr>
                     </thead>
                     <tbody id="expensesList">
-                        <!-- Expense entries will appear here -->
+                        {% for expense in expenses %}
+                          <tr>
+                            <td>{{ expense.amount }}</td>
+                            <td>{{ expense.category.cat_name }}</td>
+                            <td>{{ expense.date }}</td>
+                            <td>{{ expense.description }}</td>
+                          </tr>
+                       {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -186,7 +211,7 @@
                 labels: ['This Year', 'This Month', 'Last Year', 'Last Month'],
                 datasets: [{
                     label: 'Expenses',
-                    data: [5000, 1200, 4500, 1000], // Replace with dynamic data
+                    data: [5000, 1200, 4500, 1000], // wanted to replace with dynamic data but didnt work
                     backgroundColor: 'rgba(0, 123, 255, 0.5)',
                     borderColor: 'rgba(0, 123, 255, 1)',
                     borderWidth: 1

@@ -99,6 +99,20 @@
     <div class="container dashboard-container">
         <p style="position: absolute; top: 150px">MY INCOMES:</p>
 
+        <!-- Alerts -->
+         <div class="container mt-3">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+        </div>
+
         <!-- Income Chart -->
         <div class="row chart-container">
             <div class="col-md-12">
@@ -125,7 +139,7 @@
                     <label for="category" class="form-label">Category</label>
                     <select class="form-control" id="category" name="category" required>
                         {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            <option value="{{ category.id }}">{{ category.cat_name }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -135,7 +149,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                 </div>
                 <button type="submit" class="btn btn-success">Submit</button>
                 <button type="button" class="btn btn-danger" id="closeFormBtn">Close</button>
@@ -161,7 +175,7 @@
                         {% for income in incomes %}
                           <tr>
                             <td>{{ income.amount }}</td>
-                            <td>{{ income.category.name }}</td>
+                            <td>{{ income.category.cat_name }}</td>
                             <td>{{ income.date }}</td>
                             <td>{{ income.description }}</td>
                           </tr>
@@ -198,15 +212,15 @@
             data: {
                 labels: ['This Year', 'This Month', 'Last Year', 'Last Month'],
                 datasets: [{
-                    label: 'Income',
-                    data: [5000, 1200, 4500, 1000], // Replace with dynamic data
+                    label: 'Incomes',
+                    data: [565134, 543634.00, 21500, 0], // wanted to replace with dynamic data but didnt work
                     backgroundColor: 'rgba(0, 123, 255, 0.5)',
                     borderColor: 'rgba(0, 123, 255, 1)',
                     borderWidth: 1
                 }]
             }
         });
-
+        
         // Handle form submission
         document.getElementById("incomeFormContent").onsubmit = function(e) {
             e.preventDefault();
