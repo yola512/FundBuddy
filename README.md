@@ -19,3 +19,6 @@
 - Chart.js: A JavaScript library for creating interactive and visually appealing data charts.
 - SQLite: A lightweight database used for storing financial data.
 - Jinja2: A templating engine used to render dynamic content on the front end.
+
+
+(not finished)
